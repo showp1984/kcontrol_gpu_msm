@@ -62,8 +62,12 @@ static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 {
 	ssize_t len = 0;
 	int i = 0;
-	for (i=0; i<kpdata->num_levels; i++) {
-		len += sprintf(buf + len, "%u \n", kpdata->pwrlevel[i].gpu_freq);
+	if (kpdata != null) {
+		for (i=0; i<kpdata->num_levels; i++) {
+			len += sprintf(buf + len, "%u \n", kpdata->pwrlevel[i].gpu_freq);
+		}
+	} else {
+		len += sprintf(buf + len, "Error! kpdata pointer is null!\n");
 	}
 	return len;
 }
