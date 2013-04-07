@@ -1,0 +1,7 @@
+kcontrol_gpu_msm
+================
+
+How to build?
+1. Edit the Makefile to point to your kernel source in which you want the module to be inserted.
+2. make
+3. #done
