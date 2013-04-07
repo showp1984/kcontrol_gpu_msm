@@ -77,7 +77,7 @@ static struct attribute *kcontrol_gpu_msm_attributes[] = {
 
 static struct attribute_group kcontrol_gpu_msm_attr_group = {
 	.attrs = kcontrol_gpu_msm_attributes,
-	.name = "gpu_msm",
+	.name = "kcontrol_gpu_msm",
 };
 
 static int __init kcontrol_gpu_msm_init(void)
@@ -101,15 +101,14 @@ static int __init kcontrol_gpu_msm_init(void)
 
     WARN_ON(kpdata == NULL);
 
-	kcontrol_gpu_msm_kobject = kobject_create_and_add("kcontrol", kernel_kobj);
-	if (kcontrol_gpu_msm_kobject) {
-		rc = sysfs_create_group(kcontrol_gpu_msm_kobject,
+	if (kernel_kobj) {
+		rc = sysfs_create_group(kernel_kobj,
 							&kcontrol_gpu_msm_attr_group);
 		if (rc) {
 			pr_warn(LOGTAG"sysfs: ERROR, could not create sysfs group");
 		}
 	} else
-		pr_warn(LOGTAG"sysfs: ERROR, could not create sysfs kobj");
+		pr_warn(LOGTAG"sysfs: ERROR, could not find sysfs kobj");
 
 
     printk(KERN_INFO LOGTAG "everything done, have fun!\n");
