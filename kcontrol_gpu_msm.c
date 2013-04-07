@@ -106,8 +106,7 @@ static int __init kcontrol_gpu_msm_init(void)
     WARN_ON(kpdata == NULL);
 
 	if (kernel_kobj) {
-		rc = sysfs_create_group(kernel_kobj,
-							&kcontrol_gpu_msm_attr_group);
+		rc = sysfs_create_group(kernel_kobj, &kcontrol_gpu_msm_attr_group);
 		if (rc) {
 			pr_warn(LOGTAG"sysfs: ERROR, could not create sysfs group");
 		}
@@ -121,6 +120,7 @@ static int __init kcontrol_gpu_msm_init(void)
 
 static void __exit kcontrol_gpu_msm_exit(void)
 {
+	sysfs_remove_group(kernel_kobj, &kcontrol_gpu_msm_attr_group);
 	printk(KERN_INFO LOGTAG "unloaded\n");
 }
 
