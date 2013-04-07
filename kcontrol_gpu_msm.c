@@ -54,19 +54,16 @@ __ATTR(_name, 0444, show_##_name, NULL)
 static uint kgsl_pdata = 0x00000000;
 module_param(kgsl_pdata, uint, 0444);
 
-static uint kgsl_3d_dev = 0x00000000;
-module_param(kgsl_3d_dev, uint, 0444);
-
 struct kgsl_device_platform_data *kpdata;
-struct platform_device *kpdev;
 
 struct kobject *kcontrol_gpu_msm_kobject;
 static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 				   char *buf)
 {
-	int i = 0, len = 0;
-	for (i=0; i<ARRAY_SIZE(kpdata->pwrlevel); i++) {
-		len += sprintf(buf + len, "%u ", kpdata->pwrlevel[i].gpu_freq);
+	ssize_t len = 0;
+	int i = 0;
+	for (i=0; i<kpdata->num_levels; i++) {
+		len += sprintf(buf + len, "%u \n", kpdata->pwrlevel[i].gpu_freq);
 	}
 	return len;
 }
@@ -87,7 +84,6 @@ static int __init kcontrol_gpu_msm_init(void)
 {
 	int rc = 0;
 	kpdata = (struct kgsl_device_platform_data *)kgsl_pdata;
-	kpdev = (struct platform_device *)kgsl_3d_dev;
 
 #if THIS_EXPERIMENTAL
     printk(KERN_WARNING LOGTAG "#######################################");
@@ -103,8 +99,7 @@ static int __init kcontrol_gpu_msm_init(void)
     printk(KERN_INFO LOGTAG "by: %s\n", DRIVER_AUTHOR);
 #endif
 
-    WARN_ON(kpdata = NULL);
-    WARN_ON(kpdev = NULL);
+    WARN_ON(kpdata == NULL);
 
 	kcontrol_gpu_msm_kobject = kobject_create_and_add("kcontrol", kernel_kobj);
 	if (kcontrol_gpu_msm_kobject) {
