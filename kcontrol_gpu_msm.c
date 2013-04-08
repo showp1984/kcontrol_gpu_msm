@@ -27,7 +27,7 @@
 #include <linux/platform_device.h>
 #include "clock-local.h"
 
-#define THIS_EXPERIMENTAL 1
+#define THIS_EXPERIMENTAL 0
 
 #define DRIVER_AUTHOR "Dennis Rassmann <showp1984@gmail.com>"
 #define DRIVER_DESCRIPTION "KControl GPU module for msm devices"
@@ -196,14 +196,12 @@ static int __init kcontrol_gpu_msm_init(void)
     printk(KERN_WARNING LOGTAG "#######################################");
     printk(KERN_WARNING LOGTAG "WARNING: THIS MODULE IS EXPERIMENTAL!\n");
     printk(KERN_WARNING LOGTAG "You have been warned.\n");
-	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,
-	DRIVER_VERSION);
+	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,	DRIVER_VERSION);
 	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
     printk(KERN_WARNING LOGTAG "#######################################");
 #else
-    printk(KERN_INFO LOGTAG "%s, version %s loaded\n", DRIVER_DESCRIPTION,
-           DRIVER_VERSION);
-    printk(KERN_INFO LOGTAG "by: %s\n", DRIVER_AUTHOR);
+	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,	DRIVER_VERSION);
+	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
 #endif
 
 	WARN(kpdata == NULL, LOGTAG "kpdata == NULL!");
