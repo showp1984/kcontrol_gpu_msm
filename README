@@ -5,3 +5,23 @@ How to build?
 1. Edit the Makefile to point to your kernel source in which you want the module to be inserted.
 2. make
 3. #done
+
+How to use:
+Kcontrol will insert this module with the appropriate parameters on it's own if found in /system/lib/modules.
+All you need for that to work is compile your kernel with CONFIG_KALLSYMS_ALL.
+If you want to test this module on your own, do this:
+
+echo "0" > /proc/sys/kernel/kptr_restrict
+cat /proc/kallsyms | grep 'kgsl_3d0_pdata'
+XXXXXXXX d kgsl_3d0_pdata
+cat /proc/kallsyms | grep 'gfx2d0_clk'
+YYYYYYYY d gfx2d0_clk
+cat /proc/kallsyms | grep 'gfx3d_clk'
+ZZZZZZZZ d gfx3d_clk
+
+insmod kcontrol_gpu_msm.ko kgsl_pdata=0xXXXXXXXX gfx2d0_clk=0xYYYYYYYY gfx3d_clk=0xZZZZZZZZ
+
+The sysfs exposeables are in /sys/kernel/kcontrol_gpu_msm/.
+
+If you plan on extending this module with any functionality beware of changing the kernel memory.
+As that may result in unexpected behavior, like world war III, a black hole, or some other shit, this module only reads stuff, but does not allow writing. Your extension shouldn't either.
