@@ -39,6 +39,13 @@ MODULE_DESCRIPTION(DRIVER_DESCRIPTION);
 MODULE_VERSION(DRIVER_VERSION);
 MODULE_LICENSE("GPL");
 
+enum vdd_dig_levels {
+	VDD_DIG_NONE,
+	VDD_DIG_LOW,
+	VDD_DIG_NOMINAL,
+	VDD_DIG_HIGH
+};
+
 struct global_attr {
 	struct attribute attr;
 	ssize_t (*show)(struct kobject *kobj,
@@ -129,11 +136,43 @@ static ssize_t show_kgsl_avail_3d_clocks(struct kobject *a, struct attribute *b,
 }
 define_one_global_ro(kgsl_avail_3d_clocks);
 
+static ssize_t show_kgsl_2d_fmax_restraints(struct kobject *a, struct attribute *b,
+				   char *buf)
+{
+	ssize_t len = 0;
+	if (clk2d != NULL) {
+		len += sprintf(buf + len, "LOW: %lu \n", clk2d->fmax[VDD_DIG_LOW]);
+		len += sprintf(buf + len, "NOMINAL: %lu \n", clk2d->fmax[VDD_DIG_NOMINAL]);
+		len += sprintf(buf + len, "HIGH: %lu \n", clk2d->fmax[VDD_DIG_HIGH]);
+	} else {
+		len += sprintf(buf + len, "Error! clk2d pointer is null!\n");
+	}
+	return len;
+}
+define_one_global_ro(kgsl_2d_fmax_restraints);
+
+static ssize_t show_kgsl_3d_fmax_restraints(struct kobject *a, struct attribute *b,
+				   char *buf)
+{
+	ssize_t len = 0;
+	if (clk3d != NULL) {
+		len += sprintf(buf + len, "LOW: %lu \n", clk3d->fmax[VDD_DIG_LOW]);
+		len += sprintf(buf + len, "NOMINAL: %lu \n", clk3d->fmax[VDD_DIG_NOMINAL]);
+		len += sprintf(buf + len, "HIGH: %lu \n", clk3d->fmax[VDD_DIG_HIGH]);
+	} else {
+		len += sprintf(buf + len, "Error! clk3d pointer is null!\n");
+	}
+	return len;
+}
+define_one_global_ro(kgsl_3d_fmax_restraints);
+
 static struct attribute *kcontrol_gpu_msm_attributes[] = {
 	&version.attr,
 	&kgsl_pwrlevels.attr,
 	&kgsl_avail_2d_clocks.attr,
 	&kgsl_avail_3d_clocks.attr,
+	&kgsl_2d_fmax_restraints.attr,
+	&kgsl_3d_fmax_restraints.attr,
 	NULL
 };
 
