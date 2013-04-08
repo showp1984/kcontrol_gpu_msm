@@ -125,7 +125,7 @@ static ssize_t show_kgsl_avail_3d_clocks(struct kobject *a, struct attribute *b,
 {
 	ssize_t len = 0;
 	int i = 0;
-	if (clk2dtbl != NULL) {
+	if (clk3dtbl != NULL) {
 		for (i=0; clk3dtbl[i].freq_hz != FREQ_END; i++) {
 			len += sprintf(buf + len, "%u \n", clk3dtbl[i].freq_hz);
 		}
