@@ -25,6 +25,7 @@
 #include <linux/sysfs.h>
 #include <mach/kgsl.h>
 #include <linux/platform_device.h>
+#include "clock-local.h"
 
 #define THIS_EXPERIMENTAL 1
 
@@ -54,7 +55,19 @@ __ATTR(_name, 0444, show_##_name, NULL)
 static uint kgsl_pdata = 0x00000000;
 module_param(kgsl_pdata, uint, 0444);
 
-struct kgsl_device_platform_data *kpdata;
+static uint gfx2d0_clk = 0x00000000;
+module_param(gfx2d0_clk, uint, 0444);
+
+static uint gfx3d_clk = 0x00000000;
+module_param(gfx3d_clk, uint, 0444);
+
+static struct kgsl_device_platform_data *kpdata;
+static struct rcg_clk *rcg2d_clk;
+static struct rcg_clk *rcg3d_clk;
+static struct clk_freq_tbl *clk2dtbl;
+static struct clk_freq_tbl *clk3dtbl;
+static struct clk *clk2d;
+static struct clk *clk3d;
 
 struct kobject *kcontrol_gpu_msm_kobject;
 
@@ -99,6 +112,12 @@ static int __init kcontrol_gpu_msm_init(void)
 {
 	int rc = 0;
 	kpdata = (struct kgsl_device_platform_data *)kgsl_pdata;
+	rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
+	rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
+	clk2dtbl = (struct clk_freq_tbl *)rcg2d_clk->freq_tbl;
+	clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
+	clk2d = &rcg2d_clk->c;
+	clk3d = &rcg3d_clk->c;
 
 #if THIS_EXPERIMENTAL
     printk(KERN_WARNING LOGTAG "#######################################");
@@ -114,7 +133,13 @@ static int __init kcontrol_gpu_msm_init(void)
     printk(KERN_INFO LOGTAG "by: %s\n", DRIVER_AUTHOR);
 #endif
 
-    WARN_ON(kpdata == NULL);
+	WARN(kpdata == NULL, LOGTAG "kpdata == NULL!");
+	WARN(rcg2d_clk == NULL, LOGTAG "rcg2d_clk == NULL!");
+	WARN(rcg3d_clk == NULL, LOGTAG "rcg3d_clk == NULL!");
+	WARN(clk2dtbl == NULL, LOGTAG "clk2dtbl == NULL!");
+	WARN(clk3dtbl == NULL, LOGTAG "clk3dtbl == NULL!");
+	WARN(clk2d == NULL, LOGTAG "clk2d == NULL!");
+	WARN(clk3d == NULL, LOGTAG "clk3d == NULL!");
 
 	if (kernel_kobj) {
 		rc = sysfs_create_group(kernel_kobj, &kcontrol_gpu_msm_attr_group);
