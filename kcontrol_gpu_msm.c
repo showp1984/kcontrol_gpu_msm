@@ -97,9 +97,43 @@ static ssize_t show_version(struct kobject *a, struct attribute *b,
 }
 define_one_global_ro(version);
 
+static ssize_t show_kgsl_avail_2d_clocks(struct kobject *a, struct attribute *b,
+				   char *buf)
+{
+	ssize_t len = 0;
+	int i = 0;
+	if (clk2dtbl != NULL) {
+		for (i=0; clk2dtbl[i].freq_hz != FREQ_END; i++) {
+			len += sprintf(buf + len, "%u \n", clk2dtbl[i].freq_hz);
+		}
+	} else {
+		len += sprintf(buf + len, "Error! clk2dtbl pointer is null!\n");
+	}
+	return len;
+}
+define_one_global_ro(kgsl_avail_2d_clocks);
+
+static ssize_t show_kgsl_avail_3d_clocks(struct kobject *a, struct attribute *b,
+				   char *buf)
+{
+	ssize_t len = 0;
+	int i = 0;
+	if (clk2dtbl != NULL) {
+		for (i=0; clk3dtbl[i].freq_hz != FREQ_END; i++) {
+			len += sprintf(buf + len, "%u \n", clk3dtbl[i].freq_hz);
+		}
+	} else {
+		len += sprintf(buf + len, "Error! clk3dtbl pointer is null!\n");
+	}
+	return len;
+}
+define_one_global_ro(kgsl_avail_3d_clocks);
+
 static struct attribute *kcontrol_gpu_msm_attributes[] = {
 	&version.attr,
 	&kgsl_pwrlevels.attr,
+	&kgsl_avail_2d_clocks.attr,
+	&kgsl_avail_3d_clocks.attr,
 	NULL
 };
 
