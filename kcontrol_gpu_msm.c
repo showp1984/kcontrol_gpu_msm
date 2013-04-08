@@ -57,6 +57,7 @@ module_param(kgsl_pdata, uint, 0444);
 struct kgsl_device_platform_data *kpdata;
 
 struct kobject *kcontrol_gpu_msm_kobject;
+
 static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 				   char *buf)
 {
@@ -71,10 +72,20 @@ static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 	}
 	return len;
 }
-
 define_one_global_ro(kgsl_pwrlevels);
 
+static ssize_t show_version(struct kobject *a, struct attribute *b,
+				   char *buf)
+{
+	ssize_t len = 0;
+	len += sprintf(buf + len, DRIVER_VERSION);
+	len += sprintf(buf + len, "\n");
+	return len;
+}
+define_one_global_ro(version);
+
 static struct attribute *kcontrol_gpu_msm_attributes[] = {
+	&version.attr,
 	&kgsl_pwrlevels.attr,
 	NULL
 };
