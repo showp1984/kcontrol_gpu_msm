@@ -197,37 +197,37 @@ static int __init kcontrol_gpu_msm_init(void)
 	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
 #endif
 
-	WARN(kpdata == NULL, LOGTAG "kpdata == NULL!");
-	WARN(rcg2d_clk == NULL, LOGTAG "rcg2d_clk == NULL!");
-	WARN(rcg3d_clk == NULL, LOGTAG "rcg3d_clk == NULL!");
-	WARN(clk2dtbl == NULL, LOGTAG "clk2dtbl == NULL!");
-	WARN(clk3dtbl == NULL, LOGTAG "clk3dtbl == NULL!");
-	WARN(clk2d == NULL, LOGTAG "clk2d == NULL!");
-	WARN(clk3d == NULL, LOGTAG "clk3d == NULL!");
+	WARN(kgsl_pdata == 0x00000000, LOGTAG "kgsl_pdata == 0x00000000!");
+	WARN(gfx2d0_clk == 0x00000000, LOGTAG "gfx2d0_clk == 0x00000000!");
+	WARN(gfx3d_clk == 0x00000000, LOGTAG "gfx3d_clk == 0x00000000!");
 
-	kpdata = (struct kgsl_device_platform_data *)kgsl_pdata;
-	rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
-	rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
-	if (rcg2d_clk != NULL) {
-		clk2dtbl = (struct clk_freq_tbl *)rcg2d_clk->freq_tbl;
-		clk2d = &rcg2d_clk->c;
-	}
-	if (rcg3d_clk != NULL) {
-		clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
-		clk3d = &rcg3d_clk->c;
-	}
-
-
-	if (kernel_kobj) {
-		rc = sysfs_create_group(kernel_kobj, &kcontrol_gpu_msm_attr_group);
-		if (rc) {
-			pr_warn(LOGTAG"sysfs: ERROR, could not create sysfs group");
+	if ((kgsl_pdata != 0x00000000) && (gfx2d0_clk != 0x00000000) && (gfx3d_clk != 0x00000000)) {
+		kpdata = (struct kgsl_device_platform_data *)kgsl_pdata;
+		rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
+		rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
+		if (rcg2d_clk != NULL) {
+			clk2dtbl = (struct clk_freq_tbl *)rcg2d_clk->freq_tbl;
+			clk2d = &rcg2d_clk->c;
 		}
-	} else
-		pr_warn(LOGTAG"sysfs: ERROR, could not find sysfs kobj");
+		if (rcg3d_clk != NULL) {
+			clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
+			clk3d = &rcg3d_clk->c;
+		}
 
+		if (kernel_kobj) {
+			rc = sysfs_create_group(kernel_kobj, &kcontrol_gpu_msm_attr_group);
+			if (rc) {
+				pr_warn(LOGTAG"sysfs: ERROR, could not create sysfs group");
+			}
+		} else
+			pr_warn(LOGTAG"sysfs: ERROR, could not find sysfs kobj");
 
-    printk(KERN_INFO LOGTAG "everything done, have fun!\n");
+		pr_info(LOGTAG "everything done, have fun!\n");
+	} else {
+		pr_err(LOGTAG "Error, you need to insert this module WITH parameters!\n");
+		pr_err(LOGTAG "Nothing modified, removing myself!\n");
+		return -EAGAIN;
+	}
 	return 0;
 }
 
