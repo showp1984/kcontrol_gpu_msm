@@ -184,13 +184,6 @@ static struct attribute_group kcontrol_gpu_msm_attr_group = {
 static int __init kcontrol_gpu_msm_init(void)
 {
 	int rc = 0;
-	kpdata = (struct kgsl_device_platform_data *)kgsl_pdata;
-	rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
-	rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
-	clk2dtbl = (struct clk_freq_tbl *)rcg2d_clk->freq_tbl;
-	clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
-	clk2d = &rcg2d_clk->c;
-	clk3d = &rcg3d_clk->c;
 
 #if THIS_EXPERIMENTAL
     printk(KERN_WARNING LOGTAG "#######################################");
@@ -211,6 +204,19 @@ static int __init kcontrol_gpu_msm_init(void)
 	WARN(clk3dtbl == NULL, LOGTAG "clk3dtbl == NULL!");
 	WARN(clk2d == NULL, LOGTAG "clk2d == NULL!");
 	WARN(clk3d == NULL, LOGTAG "clk3d == NULL!");
+
+	kpdata = (struct kgsl_device_platform_data *)kgsl_pdata;
+	rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
+	rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
+	if (rcg2d_clk != NULL) {
+		clk2dtbl = (struct clk_freq_tbl *)rcg2d_clk->freq_tbl;
+		clk2d = &rcg2d_clk->c;
+	}
+	if (rcg3d_clk != NULL) {
+		clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
+		clk3d = &rcg3d_clk->c;
+	}
+
 
 	if (kernel_kobj) {
 		rc = sysfs_create_group(kernel_kobj, &kcontrol_gpu_msm_attr_group);
