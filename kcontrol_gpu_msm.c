@@ -26,6 +26,8 @@
 #include <mach/kgsl.h>
 #include <linux/platform_device.h>
 #include "clock-local.h"
+#include "adreno.h"
+#include "kgsl_device.h"
 
 #define THIS_EXPERIMENTAL 0
 
@@ -59,8 +61,8 @@ static struct global_attr _name =		\
 __ATTR(_name, 0444, show_##_name, NULL)
 
 /* module parameters */
-static uint kgsl_pdata = 0x00000000;
-module_param(kgsl_pdata, uint, 0444);
+static uint dev_3d0 = 0x00000000;
+module_param(dev_3d0, uint, 0444);
 
 static uint gfx2d0_clk = 0x00000000;
 module_param(gfx2d0_clk, uint, 0444);
@@ -68,7 +70,9 @@ module_param(gfx2d0_clk, uint, 0444);
 static uint gfx3d_clk = 0x00000000;
 module_param(gfx3d_clk, uint, 0444);
 
-static struct kgsl_device_platform_data *kpdata;
+static struct adreno_device *adev;
+static struct kgsl_device *kdev;
+static struct kgsl_pwrctrl *kpwr;
 static struct rcg_clk *rcg2d_clk;
 static struct rcg_clk *rcg3d_clk;
 static struct clk_freq_tbl *clk2dtbl;
@@ -83,12 +87,12 @@ static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 {
 	ssize_t len = 0;
 	int i = 0;
-	if (kpdata != NULL) {
-		for (i=0; i<kpdata->num_levels; i++) {
-			len += sprintf(buf + len, "%u\n", kpdata->pwrlevel[i].gpu_freq);
+	if (kpwr != NULL) {
+		for (i=0; i<kpwr->num_pwrlevels; i++) {
+			len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].gpu_freq);
 		}
 	} else {
-		len += sprintf(buf + len, "Error! kpdata pointer is null!\n");
+		len += sprintf(buf + len, "Error! kpwr pointer is null!\n");
 	}
 	return len;
 }
@@ -197,12 +201,14 @@ static int __init kcontrol_gpu_msm_init(void)
 	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
 #endif
 
-	WARN(kgsl_pdata == 0x00000000, LOGTAG "kgsl_pdata == 0x00000000!");
+	WARN(dev_3d0 == 0x00000000, LOGTAG "dev_3d0 == 0x00000000!");
 	WARN(gfx2d0_clk == 0x00000000, LOGTAG "gfx2d0_clk == 0x00000000!");
 	WARN(gfx3d_clk == 0x00000000, LOGTAG "gfx3d_clk == 0x00000000!");
 
-	if ((kgsl_pdata != 0x00000000) && (gfx2d0_clk != 0x00000000) && (gfx3d_clk != 0x00000000)) {
-		kpdata = (struct kgsl_device_platform_data *)kgsl_pdata;
+	if ((dev_3d0 != 0x00000000) && (gfx2d0_clk != 0x00000000) && (gfx3d_clk != 0x00000000)) {
+		adev = (struct adreno_device *)dev_3d0;
+		kdev = &adev->dev;
+		kpwr = &kdev->pwrctrl;
 		rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
 		rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
 		if (rcg2d_clk != NULL) {
