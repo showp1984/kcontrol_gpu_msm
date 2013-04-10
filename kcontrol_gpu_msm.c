@@ -85,7 +85,7 @@ static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 	int i = 0;
 	if (kpdata != NULL) {
 		for (i=0; i<kpdata->num_levels; i++) {
-			len += sprintf(buf + len, "%u \n", kpdata->pwrlevel[i].gpu_freq);
+			len += sprintf(buf + len, "%u\n", kpdata->pwrlevel[i].gpu_freq);
 		}
 	} else {
 		len += sprintf(buf + len, "Error! kpdata pointer is null!\n");
@@ -111,7 +111,7 @@ static ssize_t show_kgsl_avail_2d_clocks(struct kobject *a, struct attribute *b,
 	int i = 0;
 	if (clk2dtbl != NULL) {
 		for (i=0; clk2dtbl[i].freq_hz != FREQ_END; i++) {
-			len += sprintf(buf + len, "%u \n", clk2dtbl[i].freq_hz);
+			len += sprintf(buf + len, "%u\n", clk2dtbl[i].freq_hz);
 		}
 	} else {
 		len += sprintf(buf + len, "Error! clk2dtbl pointer is null!\n");
@@ -127,7 +127,7 @@ static ssize_t show_kgsl_avail_3d_clocks(struct kobject *a, struct attribute *b,
 	int i = 0;
 	if (clk3dtbl != NULL) {
 		for (i=0; clk3dtbl[i].freq_hz != FREQ_END; i++) {
-			len += sprintf(buf + len, "%u \n", clk3dtbl[i].freq_hz);
+			len += sprintf(buf + len, "%u\n", clk3dtbl[i].freq_hz);
 		}
 	} else {
 		len += sprintf(buf + len, "Error! clk3dtbl pointer is null!\n");
@@ -141,9 +141,9 @@ static ssize_t show_kgsl_2d_fmax_restraints(struct kobject *a, struct attribute 
 {
 	ssize_t len = 0;
 	if (clk2d != NULL) {
-		len += sprintf(buf + len, "LOW: %lu \n", clk2d->fmax[VDD_DIG_LOW]);
-		len += sprintf(buf + len, "NOMINAL: %lu \n", clk2d->fmax[VDD_DIG_NOMINAL]);
-		len += sprintf(buf + len, "HIGH: %lu \n", clk2d->fmax[VDD_DIG_HIGH]);
+		len += sprintf(buf + len, "LOW: %lu\n", clk2d->fmax[VDD_DIG_LOW]);
+		len += sprintf(buf + len, "NOMINAL: %lu\n", clk2d->fmax[VDD_DIG_NOMINAL]);
+		len += sprintf(buf + len, "HIGH: %lu\n", clk2d->fmax[VDD_DIG_HIGH]);
 	} else {
 		len += sprintf(buf + len, "Error! clk2d pointer is null!\n");
 	}
@@ -156,9 +156,9 @@ static ssize_t show_kgsl_3d_fmax_restraints(struct kobject *a, struct attribute 
 {
 	ssize_t len = 0;
 	if (clk3d != NULL) {
-		len += sprintf(buf + len, "LOW: %lu \n", clk3d->fmax[VDD_DIG_LOW]);
-		len += sprintf(buf + len, "NOMINAL: %lu \n", clk3d->fmax[VDD_DIG_NOMINAL]);
-		len += sprintf(buf + len, "HIGH: %lu \n", clk3d->fmax[VDD_DIG_HIGH]);
+		len += sprintf(buf + len, "LOW: %lu\n", clk3d->fmax[VDD_DIG_LOW]);
+		len += sprintf(buf + len, "NOMINAL: %lu\n", clk3d->fmax[VDD_DIG_NOMINAL]);
+		len += sprintf(buf + len, "HIGH: %lu\n", clk3d->fmax[VDD_DIG_HIGH]);
 	} else {
 		len += sprintf(buf + len, "Error! clk3d pointer is null!\n");
 	}
