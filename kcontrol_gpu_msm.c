@@ -60,6 +60,10 @@ struct global_attr {
 static struct global_attr _name =		\
 __ATTR(_name, 0444, show_##_name, NULL)
 
+#define define_one_global_rw(_name)		\
+static struct global_attr _name =		\
+__ATTR(_name, 0644, show_##_name, store_##_name)
+
 /* module parameters */
 static uint dev_3d0 = 0x00000000;
 module_param(dev_3d0, uint, 0444);
@@ -96,7 +100,29 @@ static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 	}
 	return len;
 }
-define_one_global_ro(kgsl_pwrlevels);
+static ssize_t store_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
+				   const char *buf, size_t count)
+{
+	int i = 0;
+	unsigned int pwrlvl = 0;
+	long unsigned int hz = 0;
+	const char *chz = NULL;
+
+	if (kpwr != NULL) {
+		for (i=0; i<count; i++) {
+			if (buf[i] == ' ') {
+				sscanf(&buf[(i-1)], "%u", &pwrlvl);
+				chz = &buf[(i+1)];
+			}
+		}
+		sscanf(chz, "%lu", &hz);
+		kpwr->pwrlevels[pwrlvl].gpu_freq = hz;
+	} else {
+		pr_err(LOGTAG"Error! kpwr pointer is null!\n");
+	}
+	return count;
+}
+define_one_global_rw(kgsl_pwrlevels);
 
 static ssize_t show_version(struct kobject *a, struct attribute *b,
 				   char *buf)
