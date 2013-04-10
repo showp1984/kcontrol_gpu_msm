@@ -124,6 +124,44 @@ static ssize_t store_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 }
 define_one_global_rw(kgsl_pwrlevels);
 
+static ssize_t show_kgsl_iofraction(struct kobject *a, struct attribute *b,
+				   char *buf)
+{
+	ssize_t len = 0;
+	int i = 0;
+	if (kpwr != NULL) {
+		for (i=0; i<kpwr->num_pwrlevels; i++) {
+			len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].io_fraction);
+		}
+	} else {
+		len += sprintf(buf + len, "Error! kpwr pointer is null!\n");
+	}
+	return len;
+}
+static ssize_t store_kgsl_iofraction(struct kobject *a, struct attribute *b,
+				   const char *buf, size_t count)
+{
+	int i = 0;
+	unsigned int pwrlvl = 0;
+	long unsigned int io = 0;
+	const char *cio = NULL;
+
+	if (kpwr != NULL) {
+		for (i=0; i<count; i++) {
+			if (buf[i] == ' ') {
+				sscanf(&buf[(i-1)], "%u", &pwrlvl);
+				cio = &buf[(i+1)];
+			}
+		}
+		sscanf(cio, "%lu", &io);
+		kpwr->pwrlevels[pwrlvl].io_fraction = io;
+	} else {
+		pr_err(LOGTAG"Error! kpwr pointer is null!\n");
+	}
+	return count;
+}
+define_one_global_rw(kgsl_iofraction);
+
 static ssize_t show_version(struct kobject *a, struct attribute *b,
 				   char *buf)
 {
@@ -199,6 +237,7 @@ define_one_global_ro(kgsl_3d_fmax_restraints);
 static struct attribute *kcontrol_gpu_msm_attributes[] = {
 	&version.attr,
 	&kgsl_pwrlevels.attr,
+	&kgsl_iofraction.attr,
 	&kgsl_avail_2d_clocks.attr,
 	&kgsl_avail_3d_clocks.attr,
 	&kgsl_2d_fmax_restraints.attr,
