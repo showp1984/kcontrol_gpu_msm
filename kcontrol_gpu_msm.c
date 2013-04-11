@@ -91,8 +91,16 @@ static ssize_t show_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 	ssize_t len = 0;
 	int i = 0;
 	if (kpwr != NULL) {
-		for (i=0; i<kpwr->num_pwrlevels; i++) {
-			len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].gpu_freq);
+		if (kpwr->num_pwrlevels > 0) {
+			for (i=0; i<kpwr->num_pwrlevels; i++) {
+				len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].gpu_freq);
+			}
+		} else {
+			for (i=0; ; i++) {
+				len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].gpu_freq);
+				if ((kpwr->pwrlevels[i].bus_freq == 0))
+					break;
+			}
 		}
 	} else {
 		len += sprintf(buf + len, "Error! kpwr pointer is null!\n");
@@ -129,8 +137,16 @@ static ssize_t show_kgsl_iofraction(struct kobject *a, struct attribute *b,
 	ssize_t len = 0;
 	int i = 0;
 	if (kpwr != NULL) {
-		for (i=0; i<kpwr->num_pwrlevels; i++) {
-			len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].io_fraction);
+		if (kpwr->num_pwrlevels > 0) {
+			for (i=0; i<kpwr->num_pwrlevels; i++) {
+				len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].io_fraction);
+			}
+		} else {
+			for (i=0; ; i++) {
+				len += sprintf(buf + len, "%u\n", kpwr->pwrlevels[i].io_fraction);
+				if ((kpwr->pwrlevels[i].bus_freq == 0))
+					break;
+			}
 		}
 	} else {
 		len += sprintf(buf + len, "Error! kpwr pointer is null!\n");
