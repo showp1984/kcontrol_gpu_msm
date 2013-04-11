@@ -14,7 +14,7 @@
 #define __KGSL_H
 
 #include <linux/types.h>
-#include <linux/msm_kgsl.h>
+#include "msm_kgsl.h"
 #include <linux/platform_device.h>
 #include <linux/clk.h>
 #include <linux/interrupt.h>
