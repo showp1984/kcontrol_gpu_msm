@@ -23,7 +23,6 @@
 #include <linux/errno.h>
 #include <linux/kallsyms.h>
 #include <linux/sysfs.h>
-#include <mach/kgsl.h>
 #include <linux/platform_device.h>
 #include "clock-local.h"
 #include "adreno.h"
