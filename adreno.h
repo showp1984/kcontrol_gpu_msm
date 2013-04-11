@@ -17,7 +17,7 @@
 #include "adreno_drawctxt.h"
 #include "adreno_ringbuffer.h"
 #include "kgsl_iommu.h"
-#include <mach/ocmem.h>
+#include "ocmem.h"
 
 #define DEVICE_3D_NAME "kgsl-3d"
 #define DEVICE_3D0_NAME "kgsl-3d0"
