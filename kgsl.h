@@ -23,7 +23,7 @@
 #include <linux/regulator/consumer.h>
 #include <linux/mm.h>
 
-#include <mach/kgsl.h>
+#include "mach_kgsl.h"
 
 #define KGSL_NAME "kgsl"
 
