@@ -29,9 +29,6 @@
 #include "mach-msm/clock-local.h"
 #include "gpu_msm/adreno.h"
 #include "gpu_msm/kgsl_device.h"
-//#include "include/clock-local.h"
-//#include "include/adreno.h"
-//#include "include/kgsl_device.h"
 
 #define THIS_EXPERIMENTAL 0
 
