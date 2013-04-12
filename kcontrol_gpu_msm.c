@@ -15,6 +15,8 @@
  *
  */
 
+#define REL_KERNELPATH "../3.4.0-modbuild-kernel/"
+
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/kernel.h>
@@ -24,9 +26,12 @@
 #include <linux/kallsyms.h>
 #include <linux/sysfs.h>
 #include <linux/platform_device.h>
-#include "include/clock-local.h"
-#include "include/adreno.h"
-#include "include/kgsl_device.h"
+#include "mach-msm/clock-local.h"
+#include "gpu_msm/adreno.h"
+#include "gpu_msm/kgsl_device.h"
+//#include "include/clock-local.h"
+//#include "include/adreno.h"
+//#include "include/kgsl_device.h"
 
 #define THIS_EXPERIMENTAL 0
 

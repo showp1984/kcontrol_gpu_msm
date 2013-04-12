@@ -36,6 +36,8 @@ modules.builtin
 #
 # Top-level generic files
 #
+/mach-msm
+/gpu_msm
 /tags
 /TAGS
 /linux
