@@ -24,9 +24,9 @@
 #include <linux/kallsyms.h>
 #include <linux/sysfs.h>
 #include <linux/platform_device.h>
-#include "clock-local.h"
-#include "adreno.h"
-#include "kgsl_device.h"
+#include "include/clock-local.h"
+#include "include/adreno.h"
+#include "include/kgsl_device.h"
 
 #define THIS_EXPERIMENTAL 0
 
