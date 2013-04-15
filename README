@@ -29,4 +29,4 @@ If you plan on extending this module with any functionality beware of changing t
 As that may result in unexpected behavior, like world war III, a black hole, or some other shit.
 This module only reads stuff and if it should write something in the future then I am 99.99999% sure that it is safe.
 You should be too if your extension plans to modify a running kernel.
-Otherwise: Don't touch things of which have no clue.
+Otherwise: Don't touch things of which you have no clue.
