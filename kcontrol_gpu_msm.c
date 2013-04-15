@@ -15,8 +15,6 @@
  *
  */
 
-#define REL_KERNELPATH "../3.4.0-modbuild-kernel/"
-
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/kernel.h>
