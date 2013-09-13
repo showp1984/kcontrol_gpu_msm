@@ -22,4 +22,4 @@ ifneq ($(wildcard gpu_msm),)
 	rm gpu_msm
 endif
 	make -C $(KERNEL_BUILD) M=$(PWD) clean 2> /dev/null
-	rm -f modules.order *~
+	rm -f modules.order *~ *.o
