@@ -269,17 +269,14 @@ static int __init kcontrol_gpu_msm_init(void)
 {
 	int rc = 0;
 
+	printk(KERN_WARNING LOGTAG "#######################################\n");
 #if THIS_EXPERIMENTAL
-    printk(KERN_WARNING LOGTAG "#######################################\n");
-    printk(KERN_WARNING LOGTAG "WARNING: THIS MODULE IS EXPERIMENTAL!\n");
-    printk(KERN_WARNING LOGTAG "You have been warned.\n");
-	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,	DRIVER_VERSION);
-	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
-    printk(KERN_WARNING LOGTAG "#######################################\n");
-#else
-	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,	DRIVER_VERSION);
-	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
+	printk(KERN_WARNING LOGTAG "WARNING: THIS MODULE IS EXPERIMENTAL!\n");
+	printk(KERN_WARNING LOGTAG "You have been warned.\n");
 #endif
+	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,	DRIVER_VERSION);
+	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
+	printk(KERN_WARNING LOGTAG "#######################################\n");
 
 	WARN(dev_3d0 == 0x00000000, LOGTAG "dev_3d0 == 0x00000000!");
 	WARN(gfx2d0_clk == 0x00000000, LOGTAG "gfx2d0_clk == 0x00000000!");
