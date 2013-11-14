@@ -114,16 +114,22 @@ static ssize_t store_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 	unsigned int pwrlvl = 0;
 	long unsigned int hz = 0;
 	const char *chz = NULL;
+	bool found = false;
 
 	if (kpwr != NULL) {
 		for (i=0; i<count; i++) {
 			if (buf[i] == ' ') {
 				sscanf(&buf[(i-1)], "%u", &pwrlvl);
 				chz = &buf[(i+1)];
+				found = true;
 			}
 		}
-		sscanf(chz, "%lu", &hz);
-		kpwr->pwrlevels[pwrlvl].gpu_freq = hz;
+		if (found == true) {
+			sscanf(chz, "%lu", &hz);
+			kpwr->pwrlevels[pwrlvl].gpu_freq = hz;
+		} else {
+			pr_err(LOGTAG"Wrong format! accepting only: <pwrlvl hz>, eg: <0 320000000>\n");
+		}
 	} else {
 		pr_err(LOGTAG"Error! kpwr pointer is null!\n");
 	}
@@ -136,6 +142,7 @@ static ssize_t show_kgsl_iofraction(struct kobject *a, struct attribute *b,
 {
 	ssize_t len = 0;
 	int i = 0;
+
 	if (kpwr != NULL) {
 		if (kpwr->num_pwrlevels > 0) {
 			for (i=0; i<kpwr->num_pwrlevels; i++) {
@@ -160,16 +167,22 @@ static ssize_t store_kgsl_iofraction(struct kobject *a, struct attribute *b,
 	unsigned int pwrlvl = 0;
 	long unsigned int io = 0;
 	const char *cio = NULL;
+	bool found = false;
 
 	if (kpwr != NULL) {
 		for (i=0; i<count; i++) {
 			if (buf[i] == ' ') {
 				sscanf(&buf[(i-1)], "%u", &pwrlvl);
 				cio = &buf[(i+1)];
+				found = true;
 			}
 		}
-		sscanf(cio, "%lu", &io);
-		kpwr->pwrlevels[pwrlvl].io_fraction = io;
+		if (found == true) {
+			sscanf(cio, "%lu", &io);
+			kpwr->pwrlevels[pwrlvl].io_fraction = io;
+		} else {
+			pr_err(LOGTAG"Wrong format! accepting only: <pwrlvl iofrac>, eg: <0 66>\n");
+		}
 	} else {
 		pr_err(LOGTAG"Error! kpwr pointer is null!\n");
 	}
