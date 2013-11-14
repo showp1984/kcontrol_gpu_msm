@@ -270,12 +270,12 @@ static int __init kcontrol_gpu_msm_init(void)
 	int rc = 0;
 
 #if THIS_EXPERIMENTAL
-    printk(KERN_WARNING LOGTAG "#######################################");
+    printk(KERN_WARNING LOGTAG "#######################################\n");
     printk(KERN_WARNING LOGTAG "WARNING: THIS MODULE IS EXPERIMENTAL!\n");
     printk(KERN_WARNING LOGTAG "You have been warned.\n");
 	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,	DRIVER_VERSION);
 	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
-    printk(KERN_WARNING LOGTAG "#######################################");
+    printk(KERN_WARNING LOGTAG "#######################################\n");
 #else
 	printk(KERN_INFO LOGTAG "%s, version %s\n", DRIVER_DESCRIPTION,	DRIVER_VERSION);
 	printk(KERN_INFO LOGTAG "author: %s\n", DRIVER_AUTHOR);
@@ -285,28 +285,33 @@ static int __init kcontrol_gpu_msm_init(void)
 	WARN(gfx2d0_clk == 0x00000000, LOGTAG "gfx2d0_clk == 0x00000000!");
 	WARN(gfx3d_clk == 0x00000000, LOGTAG "gfx3d_clk == 0x00000000!");
 
-	if ((dev_3d0 != 0x00000000) && (gfx2d0_clk != 0x00000000) && (gfx3d_clk != 0x00000000)) {
+	if ((dev_3d0 != 0x00000000) && (gfx3d_clk != 0x00000000)) {
 		adev = (struct adreno_device *)dev_3d0;
 		kdev = &adev->dev;
 		kpwr = &kdev->pwrctrl;
-		rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
 		rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
-		if (rcg2d_clk != NULL) {
-			clk2dtbl = (struct clk_freq_tbl *)rcg2d_clk->freq_tbl;
-			clk2d = &rcg2d_clk->c;
-		}
 		if (rcg3d_clk != NULL) {
 			clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
 			clk3d = &rcg3d_clk->c;
 		}
 
+		if (gfx2d0_clk != 0x00000000) {
+			rcg2d_clk = (struct rcg_clk *)gfx2d0_clk;
+			if (rcg2d_clk != NULL) {
+				clk2dtbl = (struct clk_freq_tbl *)rcg2d_clk->freq_tbl;
+				clk2d = &rcg2d_clk->c;
+			}
+		} else {
+			pr_warn(LOGTAG"gfx2d0_clk: No address given.\n");
+		}
+
 		if (kernel_kobj) {
 			rc = sysfs_create_group(kernel_kobj, &kcontrol_gpu_msm_attr_group);
 			if (rc) {
-				pr_warn(LOGTAG"sysfs: ERROR, could not create sysfs group");
+				pr_warn(LOGTAG"sysfs: ERROR, could not create sysfs group\n");
 			}
 		} else
-			pr_warn(LOGTAG"sysfs: ERROR, could not find sysfs kobj");
+			pr_warn(LOGTAG"sysfs: ERROR, could not find sysfs kobj\n");
 
 		pr_info(LOGTAG "everything done, have fun!\n");
 	} else {
