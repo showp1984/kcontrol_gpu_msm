@@ -32,7 +32,7 @@
 
 #define DRIVER_AUTHOR "Dennis Rassmann <showp1984@gmail.com>"
 #define DRIVER_DESCRIPTION "KControl GPU module for msm devices"
-#define DRIVER_VERSION "1.0"
+#define DRIVER_VERSION "1.1"
 #define LOGTAG "kcontrol_gpu_msm: "
 
 MODULE_AUTHOR(DRIVER_AUTHOR);
