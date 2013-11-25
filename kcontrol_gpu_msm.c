@@ -73,15 +73,15 @@ module_param(gfx2d0_clk, uint, 0444);
 static uint gfx3d_clk = 0x00000000;
 module_param(gfx3d_clk, uint, 0444);
 
-static struct adreno_device *adev;
-static struct kgsl_device *kdev;
-static struct kgsl_pwrctrl *kpwr;
-static struct rcg_clk *rcg2d_clk;
-static struct rcg_clk *rcg3d_clk;
-static struct clk_freq_tbl *clk2dtbl;
-static struct clk_freq_tbl *clk3dtbl;
-static struct clk *clk2d;
-static struct clk *clk3d;
+static struct adreno_device *adev = NULL;
+static struct kgsl_device *kdev = NULL;
+static struct kgsl_pwrctrl *kpwr = NULL;
+static struct rcg_clk *rcg2d_clk = NULL;
+static struct rcg_clk *rcg3d_clk = NULL;
+static struct clk_freq_tbl *clk2dtbl = NULL;
+static struct clk_freq_tbl *clk3dtbl = NULL;
+static struct clk *clk2d = NULL;
+static struct clk *clk3d = NULL;
 
 struct kobject *kcontrol_gpu_msm_kobject;
 
