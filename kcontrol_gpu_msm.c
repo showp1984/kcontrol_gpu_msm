@@ -293,16 +293,20 @@ static int __init kcontrol_gpu_msm_init(void)
 
 	WARN(dev_3d0 == 0x00000000, LOGTAG "dev_3d0 == 0x00000000!");
 	//WARN(gfx2d0_clk == 0x00000000, LOGTAG "gfx2d0_clk == 0x00000000!");
-	WARN(gfx3d_clk == 0x00000000, LOGTAG "gfx3d_clk == 0x00000000!");
+	//WARN(gfx3d_clk == 0x00000000, LOGTAG "gfx3d_clk == 0x00000000!");
 
-	if ((dev_3d0 != 0x00000000) && (gfx3d_clk != 0x00000000)) {
+	if (dev_3d0 != 0x00000000) {
 		adev = (struct adreno_device *)dev_3d0;
 		kdev = &adev->dev;
 		kpwr = &kdev->pwrctrl;
-		rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
-		if (rcg3d_clk != NULL) {
-			clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
-			clk3d = &rcg3d_clk->c;
+		if (gfx3d_clk != 0x00000000) {
+			rcg3d_clk = (struct rcg_clk *)gfx3d_clk;
+			if (rcg3d_clk != NULL) {
+				clk3dtbl = (struct clk_freq_tbl *)rcg3d_clk->freq_tbl;
+				clk3d = &rcg3d_clk->c;
+			}
+		} else {
+			pr_warn(LOGTAG"gfx3d_clk: No address given.\n");
 		}
 
 		if (gfx2d0_clk != 0x00000000) {
