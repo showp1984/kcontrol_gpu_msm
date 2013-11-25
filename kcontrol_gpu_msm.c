@@ -292,7 +292,7 @@ static int __init kcontrol_gpu_msm_init(void)
 	printk(KERN_WARNING LOGTAG "#######################################\n");
 
 	WARN(dev_3d0 == 0x00000000, LOGTAG "dev_3d0 == 0x00000000!");
-	WARN(gfx2d0_clk == 0x00000000, LOGTAG "gfx2d0_clk == 0x00000000!");
+	//WARN(gfx2d0_clk == 0x00000000, LOGTAG "gfx2d0_clk == 0x00000000!");
 	WARN(gfx3d_clk == 0x00000000, LOGTAG "gfx3d_clk == 0x00000000!");
 
 	if ((dev_3d0 != 0x00000000) && (gfx3d_clk != 0x00000000)) {
