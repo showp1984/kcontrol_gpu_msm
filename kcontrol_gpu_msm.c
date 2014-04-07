@@ -55,11 +55,11 @@ struct global_attr_kcontrol {
 			 const char *c, size_t count);
 };
 
-#define define_one_global_ro(_name)		\
+#define define_one_global_ro_kcontrol(_name)		\
 static struct global_attr_kcontrol _name =		\
 __ATTR(_name, 0444, show_##_name, NULL)
 
-#define define_one_global_rw(_name)		\
+#define define_one_global_rw_kcontrol(_name)		\
 static struct global_attr_kcontrol _name =		\
 __ATTR(_name, 0644, show_##_name, store_##_name)
 
@@ -135,7 +135,7 @@ static ssize_t store_kgsl_pwrlevels(struct kobject *a, struct attribute *b,
 	}
 	return count;
 }
-define_one_global_rw(kgsl_pwrlevels);
+define_one_global_rw_kcontrol(kgsl_pwrlevels);
 
 static ssize_t show_kgsl_iofraction(struct kobject *a, struct attribute *b,
 				   char *buf)
@@ -188,7 +188,7 @@ static ssize_t store_kgsl_iofraction(struct kobject *a, struct attribute *b,
 	}
 	return count;
 }
-define_one_global_rw(kgsl_iofraction);
+define_one_global_rw_kcontrol(kgsl_iofraction);
 
 static ssize_t show_version(struct kobject *a, struct attribute *b,
 				   char *buf)
@@ -198,7 +198,7 @@ static ssize_t show_version(struct kobject *a, struct attribute *b,
 	len += sprintf(buf + len, "\n");
 	return len;
 }
-define_one_global_ro(version);
+define_one_global_ro_kcontrol(version);
 
 static ssize_t show_kgsl_avail_2d_clocks(struct kobject *a, struct attribute *b,
 				   char *buf)
@@ -214,7 +214,7 @@ static ssize_t show_kgsl_avail_2d_clocks(struct kobject *a, struct attribute *b,
 	}
 	return len;
 }
-define_one_global_ro(kgsl_avail_2d_clocks);
+define_one_global_ro_kcontrol(kgsl_avail_2d_clocks);
 
 static ssize_t show_kgsl_avail_3d_clocks(struct kobject *a, struct attribute *b,
 				   char *buf)
@@ -230,7 +230,7 @@ static ssize_t show_kgsl_avail_3d_clocks(struct kobject *a, struct attribute *b,
 	}
 	return len;
 }
-define_one_global_ro(kgsl_avail_3d_clocks);
+define_one_global_ro_kcontrol(kgsl_avail_3d_clocks);
 
 static ssize_t show_kgsl_2d_fmax_restraints(struct kobject *a, struct attribute *b,
 				   char *buf)
@@ -245,7 +245,7 @@ static ssize_t show_kgsl_2d_fmax_restraints(struct kobject *a, struct attribute 
 	}
 	return len;
 }
-define_one_global_ro(kgsl_2d_fmax_restraints);
+define_one_global_ro_kcontrol(kgsl_2d_fmax_restraints);
 
 static ssize_t show_kgsl_3d_fmax_restraints(struct kobject *a, struct attribute *b,
 				   char *buf)
@@ -260,7 +260,7 @@ static ssize_t show_kgsl_3d_fmax_restraints(struct kobject *a, struct attribute 
 	}
 	return len;
 }
-define_one_global_ro(kgsl_3d_fmax_restraints);
+define_one_global_ro_kcontrol(kgsl_3d_fmax_restraints);
 
 static struct attribute *kcontrol_gpu_msm_attributes[] = {
 	&version.attr,
