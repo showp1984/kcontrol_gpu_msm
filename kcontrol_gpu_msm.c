@@ -47,7 +47,7 @@ enum vdd_dig_levels {
 	VDD_DIG_HIGH
 };
 
-struct global_attr {
+struct global_attr_kcontrol {
 	struct attribute attr;
 	ssize_t (*show)(struct kobject *kobj,
 			struct attribute *attr, char *buf);
@@ -56,11 +56,11 @@ struct global_attr {
 };
 
 #define define_one_global_ro(_name)		\
-static struct global_attr _name =		\
+static struct global_attr_kcontrol _name =		\
 __ATTR(_name, 0444, show_##_name, NULL)
 
 #define define_one_global_rw(_name)		\
-static struct global_attr _name =		\
+static struct global_attr_kcontrol _name =		\
 __ATTR(_name, 0644, show_##_name, store_##_name)
 
 /* module parameters */
